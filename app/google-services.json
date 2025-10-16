@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "148146046101",
+    "firebase_url": "https://chatspromo-default-rtdb.firebaseio.com",
+    "project_id": "chatspromo",
+    "storage_bucket": "chatspromo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148146046101:android:37a6e1b830bd57401ec79c",
+        "android_client_info": {
+          "package_name": "com.message.bulksendtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148146046101-bk5us949te9n1c9ferisfpko1tc2bugr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.message.bulksendtest",
+            "certificate_hash": "0eae3be869459053006446677eeb9d0665c173d8"
+          }
+        },
+        {
+          "client_id": "148146046101-9ccenbp3dnr5fctncv8hfq9os9jvtbak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBNome0K1JOuVjWoNUOfrXbIGRspHoy4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148146046101-9ccenbp3dnr5fctncv8hfq9os9jvtbak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

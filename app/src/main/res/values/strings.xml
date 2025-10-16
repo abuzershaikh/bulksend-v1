@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Bulksend test</string>
+    <string name="accessibility_service_description">bulksendtest</string>
+
+    <!-- Web Client ID for Google Sign-In -->
+    <string name="default_web_client_id">148146046101-9ccenbp3dnr5fctncv8hfq9os9jvtbak.apps.googleusercontent.com</string>
+</resources>
