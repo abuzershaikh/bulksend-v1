@@ -104,7 +104,13 @@
             android:exported="false" />
         <activity
             android:name=".tutorial.FaqActivity"
-            android:exported="false" /> <!-- Accessibility Service -->
+            android:exported="false" />
+        <activity
+            android:name=".waextract.TextExtractActivity"
+            android:exported="true"
+            android:label="WhatsApp Contact Extractor" />
+            
+        <!-- Unified Accessibility Service (Auto Send + Contact Extraction) -->
         <service
             android:name=".bulksend.WhatsAppAutoSendService"
             android:exported="false"

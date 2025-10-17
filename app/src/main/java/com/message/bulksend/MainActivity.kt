@@ -263,7 +263,10 @@ fun MainScreen() {
                             FeatureItem(
                                 Icons.Outlined.ContactPage,
                                 "Grab Unsaved Chat Contact",
-                                gradient = listOf(Color(0xFFFFF3E0), Color(0xFFFFCC02))
+                                gradient = listOf(Color(0xFFFFF3E0), Color(0xFFFFCC02)),
+                                onClick = {
+                                    context.startActivity(Intent(context, com.message.bulksend.waextract.TextExtractActivity::class.java))
+                                }
                             )
                         )
                     )

@@ -1,4 +1,4 @@
-package com.spreadsheet.testing.waextract
+package com.message.bulksend.waextract
 
 import android.content.BroadcastReceiver
 import android.content.ClipData
@@ -54,7 +54,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.spreadsheet.testing.ui.theme.TestingTheme
+import com.message.bulksend.ui.theme.BulksendTestTheme
+import com.message.bulksend.bulksend.WhatsAppAutoSendService
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
@@ -73,7 +74,7 @@ class TextExtractActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TestingTheme {
+            BulksendTestTheme {
                 PhoneExtractorScreen()
             }
         }
@@ -98,8 +99,8 @@ fun PhoneExtractorScreen() {
 
     val textReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == TextAccessibilityService.ACTION_TEXT_CAPTURED) {
-                val capturedText = intent.getStringExtra(TextAccessibilityService.EXTRA_CAPTURED_TEXT)
+            if (intent?.action == WhatsAppAutoSendService.ACTION_TEXT_CAPTURED) {
+                val capturedText = intent.getStringExtra(WhatsAppAutoSendService.EXTRA_CAPTURED_TEXT)
                 if (!capturedText.isNullOrEmpty()) {
                     rawText = capturedText
                     val newNumbers = extractPhoneNumbers(capturedText)
@@ -137,7 +138,7 @@ fun PhoneExtractorScreen() {
             }
         }
         lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-        val filter = IntentFilter(TextAccessibilityService.ACTION_TEXT_CAPTURED)
+        val filter = IntentFilter(WhatsAppAutoSendService.ACTION_TEXT_CAPTURED)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.registerReceiver(context, textReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
@@ -258,6 +259,7 @@ fun PhoneExtractorScreen() {
                         rawText = ""
                         contactList = emptyList()
                         clearSavedPhoneNumbers(context)
+                        WhatsAppAutoSendService.clearExtractedData()
                         Toast.makeText(context, "History Cleared!", Toast.LENGTH_SHORT).show()
                     },
                     onSaveVcf = {
@@ -285,6 +287,8 @@ fun PhoneExtractorScreen() {
         PrivacyDialog(
             onAgree = {
                 showPrivacyDialog = false
+                // Enable contact extraction in the service
+                WhatsAppAutoSendService.enableContactExtraction()
                 context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
             },
             onDisagree = {
@@ -292,6 +296,14 @@ fun PhoneExtractorScreen() {
                 Toast.makeText(context, "Accessibility permission required to extract contacts", Toast.LENGTH_LONG).show()
             }
         )
+    }
+    
+    // Enable/disable contact extraction based on lifecycle
+    DisposableEffect(Unit) {
+        WhatsAppAutoSendService.enableContactExtraction()
+        onDispose {
+            WhatsAppAutoSendService.disableContactExtraction()
+        }
     }
 }
 
@@ -977,7 +989,7 @@ private fun clearSavedPhoneNumbers(context: Context) {
 }
 
 private fun isAccessibilityServiceEnabled(context: Context): Boolean {
-    val serviceId = "${context.packageName}/${TextAccessibilityService::class.java.canonicalName}"
+    val serviceId = "${context.packageName}/${WhatsAppAutoSendService::class.java.canonicalName}"
     val enabledServices = Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
     return enabledServices?.contains(serviceId, ignoreCase = true) ?: false
 }
